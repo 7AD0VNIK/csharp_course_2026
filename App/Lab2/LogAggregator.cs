@@ -75,10 +75,7 @@ public class LogAggregator
         return result.ToString();
     }
 
-    private static bool TryParseLog(
-        string line,
-        out string traceId,
-        out string formattedLine)
+    private static bool TryParseLog(string line, out string traceId, out string formattedLine)
     {
         traceId = string.Empty;
         formattedLine = string.Empty;
@@ -96,15 +93,10 @@ public class LogAggregator
             return false;
         }
 
-        var timestamp = line.Substring(
-            TimestampStart, TimestampLength);
+        var timestamp = line.Substring(TimestampStart, TimestampLength);
 
-        if (!DateTime.TryParseExact(
-                timestamp,
-                TimestampFormat,
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out _))
+        if (!DateTime.TryParseExact(timestamp, TimestampFormat, CultureInfo.InvariantCulture, 
+                DateTimeStyles.None, out _))
         {
             return false;
         }
@@ -124,24 +116,21 @@ public class LogAggregator
 
         foreach (var character in traceId)
         {
-            if (char.IsWhiteSpace(character)
-                || character == '[')
+            if (char.IsWhiteSpace(character) || character == '[')
             {
                 return false;
             }
         }
 
         var serviceStart = traceEnd + 2;
-        var separatorIndex = line.IndexOf(
-            ": ", serviceStart, StringComparison.Ordinal);
+        var separatorIndex = line.IndexOf(": ", serviceStart, StringComparison.Ordinal);
 
         if (separatorIndex <= serviceStart)
         {
             return false;
         }
 
-        var serviceName = line.Substring(
-            serviceStart, separatorIndex - serviceStart);
+        var serviceName = line.Substring(serviceStart, separatorIndex - serviceStart);
 
         foreach (var character in serviceName)
         {
@@ -161,7 +150,7 @@ public class LogAggregator
             return false;
         }
 
-        formattedLine = $"[{timestamp}] {serviceName}: {message}";
+        formattedLine = $"[{timestamp}] {serviceName}: {message}"; // $ позволяет подставлять переменные прямо в строку
         return true;
     }
 
@@ -174,10 +163,12 @@ public class LogAggregator
     {
         var serviceStart = TimestampEnd + 2;
         var separatorIndex = log.IndexOf(": ", serviceStart, StringComparison.Ordinal);
-
         return log.Substring(serviceStart, separatorIndex - serviceStart);
     }
 
+    // <0 : first раньше должен быть
+    // >0 : first позже должен быть
+    // =0 : эквивалентны
     private static int CompareLogs(string first, string second)
     {
         var comparison = string.CompareOrdinal(GetTimestamp(first), GetTimestamp(second));
@@ -197,6 +188,7 @@ public class LogAggregator
         return string.CompareOrdinal(first, second);
     }
 
+    // сортировка вставками
     private static void SortLogs(List<string> logs)
     {
         for (var i = 1; i < logs.Count; i++)
@@ -214,14 +206,10 @@ public class LogAggregator
         }
     }
 
-    private static int CompareTraceIds(
-        string first,
-        string second,
-        Dictionary<string, List<string>> logsByTraceId)
+    private static int CompareTraceIds(string first, string second, Dictionary<string, List<string>> logsByTraceId)
     {
-        var comparison = string.CompareOrdinal(
-            GetTimestamp(logsByTraceId[first][0]),
-            GetTimestamp(logsByTraceId[second][0]));
+        var comparison = string.CompareOrdinal(GetTimestamp(logsByTraceId[first][0]), 
+                                                  GetTimestamp(logsByTraceId[second][0]));
 
         if (comparison != 0)
         {
