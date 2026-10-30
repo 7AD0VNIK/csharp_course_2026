@@ -1,4 +1,4 @@
-﻿namespace App.Lab3;
+﻿namespace Marketplace.Core;
 
 public class User
 {
@@ -65,7 +65,8 @@ public class User
         RegisterDate = DateTime.Now;
     }
 
-    public User(string login, string passwordHash, string name, string surname, string inn, string phone) : this()
+    public User(string login, string passwordHash, 
+        string name, string surname, string inn, string phone) : this()
     {
         Login = login;
         PasswordHash = passwordHash;

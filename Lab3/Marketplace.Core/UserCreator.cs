@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace App.Lab3;
+namespace Marketplace.Core;
 
 public static class UserCreator
 {

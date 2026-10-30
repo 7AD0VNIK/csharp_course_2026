@@ -1,8 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{43627CB8-B153-46C2-A49D-8A760DB53DF7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppTests", "AppTests\AppTests.csproj", "{B988E016-CA98-40CB-B971-46ECD2C0EEB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lab3", "Lab3", "{31FAD5D7-D17B-446A-A3E2-4A89ABEC7535}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.Core", "Lab3\Marketplace.Core\Marketplace.Core.csproj", "{066CF435-A36D-4D3B-900B-832D26D1BBA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.App", "Lab3\Marketplace.App\Marketplace.App.csproj", "{7E03E54D-7753-4050-859C-45B907FDD480}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +25,17 @@ Global
 		{B988E016-CA98-40CB-B971-46ECD2C0EEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B988E016-CA98-40CB-B971-46ECD2C0EEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B988E016-CA98-40CB-B971-46ECD2C0EEB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{066CF435-A36D-4D3B-900B-832D26D1BBA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{066CF435-A36D-4D3B-900B-832D26D1BBA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{066CF435-A36D-4D3B-900B-832D26D1BBA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{066CF435-A36D-4D3B-900B-832D26D1BBA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E03E54D-7753-4050-859C-45B907FDD480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E03E54D-7753-4050-859C-45B907FDD480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E03E54D-7753-4050-859C-45B907FDD480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E03E54D-7753-4050-859C-45B907FDD480}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{066CF435-A36D-4D3B-900B-832D26D1BBA9} = {31FAD5D7-D17B-446A-A3E2-4A89ABEC7535}
+		{7E03E54D-7753-4050-859C-45B907FDD480} = {31FAD5D7-D17B-446A-A3E2-4A89ABEC7535}
 	EndGlobalSection
 EndGlobal
