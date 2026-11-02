@@ -6,7 +6,7 @@ public class FrequencyTests
 {
     [TestCase("She stood up. Then she left.", new[] { "she left", "stood up", "then she", "she stood up", "then she left" })]
     [TestCase("a b c d. b c d. e b c a d.", new[] { "a b", "b c", "c d", "e b", "a b c", "b c d", "e b c", "c a d" })]
-    public void Tests(string inputText, string[] dictionaryLines)
+    public void FindMostFrequentContinuations(string inputText, string[] dictionaryLines)
     {
         var result = Frequency.FrequencyAnalysis(inputText);
         var resultLines = new List<string>();
@@ -27,10 +27,11 @@ public class FrequencyTests
         Assert.That(result, Is.Empty);
     }
 
-    [Test]
-    public void SingleWord_ReturnsEmptyDictionary()
+    [TestCase("")]
+    [TestCase("Hello.")]
+    public void TextWithoutWordPairs_ReturnsEmptyDictionary(string inputText)
     {
-        var result = Frequency.FrequencyAnalysis("Hello.");
+        var result = Frequency.FrequencyAnalysis(inputText);
 
         Assert.That(result, Is.Empty);
     }

@@ -1,6 +1,6 @@
-namespace App.Lab2;
-
 using System.Text;
+
+namespace App.Lab2;
 
 public class Frequency
 {
@@ -15,7 +15,7 @@ public class Frequency
 
         var counts = new Dictionary<string, Dictionary<string, int>>(StringComparer.Ordinal);
         var words = new List<string>();
-        var word = new StringBuilder();
+        var wordBuilder = new StringBuilder();
 
         for (var i = 0; i <= inputString.Length; i++)
         {
@@ -24,19 +24,17 @@ public class Frequency
 
             if (char.IsLetterOrDigit(currentChar))
             {
-                word.Append(char.ToLowerInvariant(currentChar));
+                wordBuilder.Append(char.ToLowerInvariant(currentChar));
                 continue;
             }
 
-            if (word.Length > 0)
+            if (wordBuilder.Length > 0)
             {
-                words.Add(word.ToString());
-                word.Clear();
+                words.Add(wordBuilder.ToString());
+                wordBuilder.Clear();
             }
 
-            if (isTextEnd || currentChar == '.' 
-                          || currentChar == '!' 
-                          || currentChar == '?')
+            if (isTextEnd || currentChar == '.' || currentChar == '!' || currentChar == '?')
             {
                 CountNGrams(words, counts);
                 words.Clear();
@@ -88,8 +86,7 @@ public class Frequency
     {
         if (!counts.TryGetValue(prefix, out var continuations))
         {
-            continuations = new Dictionary<string, int>(
-                StringComparer.Ordinal);
+            continuations = new Dictionary<string, int>(StringComparer.Ordinal);
             counts[prefix] = continuations;
         }
 
