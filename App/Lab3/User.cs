@@ -55,7 +55,7 @@ public class User
 
         for (var i = 2; i < phone.Length; i++)
         {
-            if (phone[i] < '0' || phone[i] > '9')
+            if (!char.IsDigit(phone[i]))
                 return false;
         }
 
