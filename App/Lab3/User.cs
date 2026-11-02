@@ -9,7 +9,7 @@ public class User
     private string name;
     private string surname;
     private string inn;
-    private string phone = "";
+    private string phone = string.Empty;
 
     public User(string login, string password, string name, string surname, string inn, string phone)
     {
@@ -26,10 +26,8 @@ public class User
         TryUpdatePhone(phone);
     }
 
-    public string GetUserFullName()
-    {
-        return $"{name} {surname}";
-    }
+    public string GetUserFullName() => $"{name} {surname}";
+    
     public bool TryUpdatePhone(string phone)
     {
         if (!IsPhoneValid(phone))
@@ -38,7 +36,6 @@ public class User
         }
         this.phone = phone;
         return true;
-        
     }
 
     private static bool IsPhoneValid(string phone)
@@ -50,7 +47,7 @@ public class User
 
         for (int i = 2; i < phone.Length; i++)
         {
-            if (phone[i] < '0' || phone[i] > '9')
+            if (!char.IsDigit(phone[i]))
             {
                 return false;
             }
