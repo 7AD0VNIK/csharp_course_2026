@@ -34,8 +34,7 @@ public static class Program
         Console.WriteLine(user.GetUserFullName() == "Клим Садов");
         Console.WriteLine(user.Id != Guid.Empty);
 
-        Console.WriteLine(
-            user.PasswordHash == "202CB962AC59075B964B07152D234B70");
+        Console.WriteLine(user.PasswordHash == "202CB962AC59075B964B07152D234B70");
 
         var savedPhone = user.Phone;
 
