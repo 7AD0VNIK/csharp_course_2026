@@ -29,7 +29,6 @@ public class LogAggregatorTests
         Assert.That(result, Is.EqualTo(expected));
     }
     
-    
     [Test]
     public void MergeLogs_MultipleGroups_SortsGroupsAndServices()
     {
@@ -65,7 +64,7 @@ public class LogAggregatorTests
     }
     
     [Test]
-    public void MergeLogs_SameStartTime_SortsTraceIds()
+    public void SameStartTime_SortsTraceIds()
     {
         var result = LogAggregator.MergeLogs(
             "[2023-10-25 14:05:00] [trace-B] Gateway: Start",

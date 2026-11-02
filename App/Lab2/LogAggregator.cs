@@ -1,4 +1,3 @@
-
 using System.Globalization;
 using System.Text;
 
@@ -44,7 +43,7 @@ public class LogAggregator
 
         foreach (var logs in logsByTraceId.Values)
         {
-            SortLogs(logs);
+            InsertionSortLogs(logs);
         }
 
         var traceIds = new List<string>(logsByTraceId.Keys);
@@ -61,7 +60,8 @@ public class LogAggregator
 
             var traceId = traceIds[i];
 
-            result.Append("--- TraceId: [")
+            result
+                .Append("--- TraceId: [")
                 .Append(traceId)
                 .Append("] ---");
 
@@ -95,8 +95,7 @@ public class LogAggregator
 
         var timestamp = line.Substring(TimestampStart, TimestampLength);
 
-        if (!DateTime.TryParseExact(timestamp, TimestampFormat, CultureInfo.InvariantCulture, 
-                DateTimeStyles.None, out _))
+        if (!DateTime.TryParseExact(timestamp, TimestampFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
         {
             return false;
         }
@@ -111,8 +110,7 @@ public class LogAggregator
             return false;
         }
 
-        traceId = line.Substring(
-            TraceStart, traceEnd - TraceStart);
+        traceId = line.Substring(TraceStart, traceEnd - TraceStart);
 
         foreach (var character in traceId)
         {
@@ -154,10 +152,7 @@ public class LogAggregator
         return true;
     }
 
-    private static string GetTimestamp(string log)
-    {
-        return log.Substring(TimestampStart, TimestampLength);
-    }
+    private static string GetTimestamp(string log) => log.Substring(TimestampStart, TimestampLength);
 
     private static string GetServiceName(string log)
     {
@@ -187,9 +182,8 @@ public class LogAggregator
 
         return string.CompareOrdinal(first, second);
     }
-
-    // сортировка вставками
-    private static void SortLogs(List<string> logs)
+    
+    private static void InsertionSortLogs(List<string> logs)
     {
         for (var i = 1; i < logs.Count; i++)
         {
@@ -206,7 +200,8 @@ public class LogAggregator
         }
     }
 
-    private static int CompareTraceIds(string first, string second, Dictionary<string, List<string>> logsByTraceId)
+    private static int CompareTraceIds(string first, string second,
+        Dictionary<string, List<string>> logsByTraceId)
     {
         var comparison = string.CompareOrdinal(GetTimestamp(logsByTraceId[first][0]), 
                                                   GetTimestamp(logsByTraceId[second][0]));
