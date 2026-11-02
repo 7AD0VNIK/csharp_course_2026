@@ -2,56 +2,15 @@
 
 public class User
 {
-    private readonly Guid id;
-    private readonly DateTime registerDate;
-    private string login = "";
-    private string passwordHash = "";
-    private string name = "";
-    private string surname = "";
-    private string inn = "";
-    private string phone = "";
+    private string phone = string.Empty;
 
-    public Guid Id
-    {
-        get => id;
-        init => id = value;
-    }
-
-    public DateTime RegisterDate
-    {
-        get => registerDate;
-        init => registerDate = value;
-    }
-
-    public string Login
-    {
-        get => login;
-        set => login = value;
-    }
-
-    public string PasswordHash
-    {
-        get => passwordHash;
-        set => passwordHash = value;
-    }
-
-    public string Name
-    {
-        get => name;
-        set => name = value;
-    }
-
-    public string Surname
-    {
-        get => surname;
-        set => surname = value;
-    }
-
-    public string Inn
-    {
-        get => inn;
-        set => inn = value;
-    }
+    public Guid Id { get; init; }
+    public DateTime RegisterDate { get; init; }
+    public string Login { get; set; } = string.Empty;
+    public string PasswordHash { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Surname { get; set; } = string.Empty;
+    public string Inn { get; set; } = string.Empty;
 
     public string Phone
     {
@@ -65,8 +24,12 @@ public class User
         RegisterDate = DateTime.Now;
     }
 
-    public User(string login, string passwordHash, 
-        string name, string surname, string inn, string phone) : this()
+    public User(string login, 
+        string passwordHash, 
+        string name,
+        string surname, 
+        string inn, 
+        string phone) : this()
     {
         Login = login;
         PasswordHash = passwordHash;
@@ -76,10 +39,7 @@ public class User
         Phone = phone;
     }
 
-    public string GetUserFullName()
-    {
-        return $"{Name} {Surname}";
-    }
+    public string GetUserFullName() => $"{Name} {Surname}";
 
     private bool TryUpdatePhone(string phone)
     {
@@ -99,7 +59,7 @@ public class User
 
         for (var i = 2; i < phone.Length; i++)
         {
-            if (phone[i] < '0' || phone[i] > '9')
+            if (!char.IsDigit(phone[i]))
                 return false;
         }
 
