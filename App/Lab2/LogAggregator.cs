@@ -204,7 +204,7 @@ public class LogAggregator
         Dictionary<string, List<string>> logsByTraceId)
     {
         var comparison = string.CompareOrdinal(GetTimestamp(logsByTraceId[first][0]), 
-                                                GetTimestamp(logsByTraceId[second][0]));
+                                             GetTimestamp(logsByTraceId[second][0]));
 
         if (comparison != 0)
         {
