@@ -5,7 +5,7 @@ namespace AppTests.Lab3;
 public class ProductTests
 {
     [Test]
-    public void Constructor_InitializesProduct()
+    public void ConstructorWithValidArguments_ShouldPreserveValuesAndGenerateNonEmptyId()
     {
         var categories = ProductCategory.Electronics | ProductCategory.Books;
         var product = new Product("Электронная книга", 1000m, categories);

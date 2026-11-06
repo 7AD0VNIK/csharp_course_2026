@@ -24,7 +24,8 @@ public class User
         RegisterDate = DateTime.Now;
     }
 
-    public User(string login, 
+    public User(
+        string login, 
         string passwordHash, 
         string name,
         string surname, 
