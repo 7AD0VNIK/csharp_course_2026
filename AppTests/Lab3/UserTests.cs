@@ -32,7 +32,11 @@ public class UserTests
     private static User CreateUser()
     {
         return new User(
-            "klim", "123", "Клим", "Садов",
-            "123456789012", "+79131234567");
+            "klim", 
+            "123",
+            "Клим",
+            "Садов",
+            "123456789012",
+            "+79131234567");
     }
 }
