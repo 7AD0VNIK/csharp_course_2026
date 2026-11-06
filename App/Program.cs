@@ -1,7 +1,7 @@
 ﻿namespace App;
 
 public static class Program
-{ 
+{
     public static void Main()
     {
         var first = new Lab3.User("klim", "123", "Клим", "Садов", "123456789012", "+79131234567");
