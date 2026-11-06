@@ -18,7 +18,6 @@ public class User
         this.name = name;
         this.surname = surname;
         this.inn = inn;
-        this.phone = phone;
         
         id = Guid.NewGuid();
         registerDate = DateTime.Now;
