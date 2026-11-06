@@ -5,14 +5,14 @@ namespace AppTests.Lab2;
 public class LogAggregatorTests
 {
     [Test]
-    public void MergeLogs_OnlyGarbage_ReturnsEmptyString()
+    public void OnlyGarbage_ReturnsEmptyString()
     {
         var result = LogAggregator.MergeLogs("garbage", "[invalid]", null);
         Assert.That(result, Is.EqualTo(""));
     }
 
     [Test]
-    public void MergeLogs_SingleGroup_SortsByTime()
+    public void SingleGroup_SortsByTime()
     {
         var result = LogAggregator.MergeLogs(
             "[2023-10-25 14:05:02] [trace-A] AuthService: Second",
@@ -30,7 +30,7 @@ public class LogAggregatorTests
     }
     
     [Test]
-    public void MergeLogs_MultipleGroups_SortsGroupsAndServices()
+    public void MultipleGroups_SortsGroupsAndServices()
     {
         var result = LogAggregator.MergeLogs(
             "[2023-10-25 14:05:02] [trace-A] AuthService: Second",
@@ -54,7 +54,7 @@ public class LogAggregatorTests
     }
     
     [Test]
-    public void MergeLogs_InvalidDate_IgnoresLine()
+    public void InvalidDate_IgnoresLine()
     {
         var result = LogAggregator.MergeLogs(
             "[2023-99-25 14:05:01] [A] Auth: Invalid"
