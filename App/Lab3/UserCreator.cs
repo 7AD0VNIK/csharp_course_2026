@@ -5,8 +5,13 @@ namespace App.Lab3;
 
 public static class UserCreator
 {
-    public static User CreateUser(string login, string password, string name,
-        string surname, string inn, string phone)
+    public static User CreateUser(
+        string login, 
+        string password, 
+        string name, 
+        string surname, 
+        string inn,
+        string phone)
     {
         var passwordHash = GetPasswordHash(password);
         return new User(login, passwordHash, name, surname, inn, phone);

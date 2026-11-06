@@ -5,7 +5,7 @@ namespace AppTests.Lab3;
 public class UserTests
 {
     [Test]
-    public void InitializesProperties()
+    public void Constructor_WithValidArguments_ShouldPreservePassedValues()
     {
         var user = CreateUser();
 
@@ -21,7 +21,7 @@ public class UserTests
     }
 
     [Test]
-    public void GeneratesUniqueIdsAndRegistrationDate()
+    public void DefaultConstructor_ShouldGenerateUniqueIdsAndCurrentRegistrationDate()
     {
         var before = DateTime.Now;
         var first = new User();
@@ -37,7 +37,7 @@ public class UserTests
     }
 
     [Test]
-    public void SetsProperties()
+    public void ObjectInitializer_WithValidValues_ShouldSetPropertiesAndFullName()
     {
         var user = new User
         {
