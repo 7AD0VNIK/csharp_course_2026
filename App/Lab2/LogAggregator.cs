@@ -18,22 +18,24 @@ public class LogAggregator
             return string.Empty;
         }
 
-        var logsByTraceId = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+        var logsByTraceId =
+            new Dictionary<string, List<(DateTime Timestamp, string ServiceName, string FormattedLine)>>(
+                StringComparer.Ordinal);
 
         foreach (var line in logLines)
         {
-            if (!TryParseLog(line, out var traceId, out var formattedLine))
+            if (!TryParseLog(line, out var traceId, out var log))
             {
                 continue;
             }
 
             if (!logsByTraceId.TryGetValue(traceId, out var logs))
             {
-                logs = new List<string>();
+                logs = new List<(DateTime Timestamp, string ServiceName, string FormattedLine)>();
                 logsByTraceId[traceId] = logs;
             }
 
-            logs.Add(formattedLine);
+            logs.Add(log);
         }
 
         if (logsByTraceId.Count == 0)
@@ -68,17 +70,18 @@ public class LogAggregator
             foreach (var log in logsByTraceId[traceId])
             {
                 result.AppendLine();
-                result.Append(log);
+                result.Append(log.FormattedLine);
             }
         }
 
         return result.ToString();
     }
 
-    private static bool TryParseLog(string line, out string traceId, out string formattedLine)
+    private static bool TryParseLog(string line, out string traceId,
+        out (DateTime Timestamp, string ServiceName, string FormattedLine) log)
     {
         traceId = string.Empty;
-        formattedLine = string.Empty;
+        log = default;
 
         if (string.IsNullOrEmpty(line) || line.Length <= TraceStart)
         {
@@ -93,9 +96,9 @@ public class LogAggregator
             return false;
         }
 
-        var timestamp = line.Substring(TimestampStart, TimestampLength);
+        var timestampText = line.Substring(TimestampStart, TimestampLength);
 
-        if (!DateTime.TryParseExact(timestamp, TimestampFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+        if (!TryParseTimestamp(timestampText, out var timestamp))
         {
             return false;
         }
@@ -148,42 +151,43 @@ public class LogAggregator
             return false;
         }
 
-        formattedLine = $"[{timestamp}] {serviceName}: {message}"; // $ позволяет подставлять переменные прямо в строку
+        var formattedLine = $"[{timestampText}] {serviceName}: {message}";
+        log = (timestamp, serviceName, formattedLine);
         return true;
     }
 
-    private static string GetTimestamp(string log) => log.Substring(TimestampStart, TimestampLength);
-
-    private static string GetServiceName(string log)
+    private static bool TryParseTimestamp(string timestampText, out DateTime timestamp)
     {
-        var serviceStart = TimestampEnd + 2;
-        var separatorIndex = log.IndexOf(": ", serviceStart, StringComparison.Ordinal);
-        return log.Substring(serviceStart, separatorIndex - serviceStart);
+        return DateTime.TryParseExact(timestampText, TimestampFormat, CultureInfo.InvariantCulture, 
+            DateTimeStyles.None, out timestamp);
     }
-
+    
     // <0 : first раньше должен быть
     // >0 : first позже должен быть
     // =0 : эквивалентны
-    private static int CompareLogs(string first, string second)
+    private static int CompareLogs(
+        (DateTime Timestamp, string ServiceName, string FormattedLine) first,
+        (DateTime Timestamp, string ServiceName, string FormattedLine) second)
     {
-        var comparison = string.CompareOrdinal(GetTimestamp(first), GetTimestamp(second));
+        var comparison = first.Timestamp.CompareTo(second.Timestamp);
 
         if (comparison != 0)
         {
             return comparison;
         }
 
-        comparison = string.CompareOrdinal(GetServiceName(first), GetServiceName(second));
+        comparison = string.CompareOrdinal(first.ServiceName, second.ServiceName);
 
         if (comparison != 0)
         {
             return comparison;
         }
 
-        return string.CompareOrdinal(first, second);
+        return string.CompareOrdinal(first.FormattedLine, second.FormattedLine);
     }
-    
-    private static void InsertionSortLogs(List<string> logs)
+
+    private static void InsertionSortLogs(
+        List<(DateTime Timestamp, string ServiceName, string FormattedLine)> logs)
     {
         for (var i = 1; i < logs.Count; i++)
         {
@@ -201,10 +205,11 @@ public class LogAggregator
     }
 
     private static int CompareTraceIds(string first, string second,
-        Dictionary<string, List<string>> logsByTraceId)
+        Dictionary<string, List<(DateTime Timestamp, string ServiceName, string FormattedLine)>> logsByTraceId)
     {
-        var comparison = string.CompareOrdinal(GetTimestamp(logsByTraceId[first][0]), 
-                                               GetTimestamp(logsByTraceId[second][0]));
+        var firstTimestamp = logsByTraceId[first][0].Timestamp;
+        var secondTimestamp = logsByTraceId[second][0].Timestamp;
+        var comparison = firstTimestamp.CompareTo(secondTimestamp);
 
         if (comparison != 0)
         {
@@ -216,7 +221,7 @@ public class LogAggregator
 
     private static void SortTraceIds(
         List<string> traceIds,
-        Dictionary<string, List<string>> logsByTraceId)
+        Dictionary<string, List<(DateTime Timestamp, string ServiceName, string FormattedLine)>> logsByTraceId)
     {
         for (var i = 1; i < traceIds.Count; i++)
         {
