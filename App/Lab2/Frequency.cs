@@ -17,15 +17,25 @@ public class Frequency
         var words = new List<string>();
         var wordBuilder = new StringBuilder();
 
-        for (var i = 0; i <= inputString.Length; i++)
-        {
-            var isTextEnd = i == inputString.Length;
-            var currentChar = isTextEnd ? '.' : inputString[i];
+        var sentences = inputString.Split(
+            new[] { '.', '!', '?' },
+            StringSplitOptions.RemoveEmptyEntries);
 
-            if (char.IsLetterOrDigit(currentChar))
+        foreach (var sentence in sentences)
+        {
+            foreach (var currentChar in sentence)
             {
-                wordBuilder.Append(char.ToLowerInvariant(currentChar));
-                continue;
+                if (char.IsLetterOrDigit(currentChar))
+                {
+                    wordBuilder.Append(char.ToLowerInvariant(currentChar));
+                    continue;
+                }
+
+                if (wordBuilder.Length > 0)
+                {
+                    words.Add(wordBuilder.ToString());
+                    wordBuilder.Clear();
+                }
             }
 
             if (wordBuilder.Length > 0)
@@ -34,11 +44,10 @@ public class Frequency
                 wordBuilder.Clear();
             }
 
-            if (isTextEnd || currentChar == '.' || currentChar == '!' || currentChar == '?')
-            {
-                CountNGrams(words, counts);
-                words.Clear();
-            }
+            var sentenceWords = words.ToArray();
+            CountNGrams(sentenceWords, 2, counts);
+            CountNGrams(sentenceWords, 3, counts);
+            words.Clear();
         }
 
         foreach (var entry in counts)
@@ -48,7 +57,7 @@ public class Frequency
 
             foreach (var continuation in entry.Value)
             {
-                if (continuation.Value > bestCount 
+                if (continuation.Value > bestCount
                     || (continuation.Value == bestCount
                         && string.CompareOrdinal(continuation.Key, bestWord) < 0))
                 {
@@ -63,19 +72,14 @@ public class Frequency
         return result;
     }
 
-    private static void CountNGrams(
-        List<string> words,
-        Dictionary<string, Dictionary<string, int>> counts)
+    private static void CountNGrams(string[] words, int n, Dictionary<string, Dictionary<string, int>> counts)
     {
-        for (var i = 0; i + 1 < words.Count; i++)
+        for (var i = 0; i <= words.Length - n; i++)
         {
-            CountContinuation(words[i], words[i + 1], counts);
+            var prefix = string.Join(" ", words, i, n - 1);
+            var continuation = words[i + n - 1];
 
-            if (i + 2 < words.Count)
-            {
-                var prefix = words[i] + " " + words[i + 1];
-                CountContinuation(prefix, words[i + 2], counts);
-            }
+            CountContinuation(prefix, continuation, counts);
         }
     }
 
