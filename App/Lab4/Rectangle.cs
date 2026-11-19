@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace App.Lab4;
+﻿namespace App.Lab4;
 
 public class Rectangle : IGeometry
 {
@@ -8,7 +6,9 @@ public class Rectangle : IGeometry
     public double Width { get; }
     public int VertexCount => 4;
 
-    public Rectangle(double width, double height)
+    public Rectangle(
+        double width, 
+        double height)
     {
         if (width < 0)
             throw new ArgumentOutOfRangeException(nameof(width));

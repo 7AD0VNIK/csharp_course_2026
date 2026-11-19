@@ -10,5 +10,4 @@ public class Vertex : I2DVertex
         X = x;
         Y = y;
     }
-    
 }

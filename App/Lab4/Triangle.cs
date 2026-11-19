@@ -8,7 +8,10 @@ public class Triangle : IGeometry
 
     public int VertexCount => 3;
 
-    public Triangle(I2DVertex first, I2DVertex second, I2DVertex third)
+    public Triangle(
+        I2DVertex first, 
+        I2DVertex second, 
+        I2DVertex third)
     {
         this.first = first;
         this.second = second;
