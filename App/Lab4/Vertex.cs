@@ -11,4 +11,8 @@ public class Vertex : I2DVertex
         Y = y;
     }
     
+    public override string ToString()
+    {
+        return FormattableString.Invariant($"(x = {X:F3}, y = {Y:F3})");
+    }
 }
