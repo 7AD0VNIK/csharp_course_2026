@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace App.Lab4;
+﻿namespace App.Lab4;
 
 public class Rectangle : IGeometry
 {
