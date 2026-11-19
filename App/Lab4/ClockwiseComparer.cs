@@ -27,6 +27,6 @@ public class ClockwiseComparer : IComparer<I2DVertex>
     private double GetAngle(I2DVertex vertex)
     {
         var angle = Math.Atan2(vertex.Y - centerY, vertex.X - centerX);
-        return angle < 0 ? angle + 2 * Math.PI :  angle;
+        return angle < 0 ? angle + 2 * Math.PI : angle;
     }
 }
